@@ -21,7 +21,7 @@ export default function Login () {
     return (
         <Grid container>
             <Grid item xs={1} md={4} />
-            <Grid item xs={10} md={4} lg={6}>
+            <Grid item xs={10} md={4}>
                 <Grid container className={classes.root}>
                     <Grid item xs={12} className={classes.glass}>
 
