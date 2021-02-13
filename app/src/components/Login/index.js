@@ -1,6 +1,7 @@
 import React from 'react';
-import { Grid, requirePropFactory } from '@material-ui/core';
+import { Grid, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import Spacer from '../Spacer';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,12 +42,19 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: "center",
         alignItems: 'center',
-        transform: 'rotate(-10deg)'
+        transform: 'rotate(-10deg)',
+        marginBottom: '100px',
     },
     innerSection: {
         height: '100px',
         height: '300px',
         backgroundColor: 'red',
+    },
+    fields: {
+        justifyContent: 'space-between'
+    },
+    wrapper: {
+        minHeight: '100%',
     }
 }));
 
@@ -61,12 +69,33 @@ export default function Login(props) {
                 <Grid container className={classes.root}>
                     <img className={classes.img} src={panther} alt="ceva" />
                     <Grid item xs={12} className={classes.glass}>
-                        <Grid container direction="column" alignItems="center">
+                        <Grid container direction="column" alignItems="center" className={classes.wrapper}>
                             <Grid item className={classes.logo}>
                                 To do app
                             </Grid>
+                            <Spacer />
                             <Grid item>
-                                <Grid container direction="column" ></Grid>
+                                <Grid container direction="column" spacing={2} className={classes.fields}>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            id="ligin-user"
+                                            label="Username"
+                                            type="text"
+                                            autoComplete="current-password"
+                                            variant="outlined"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+
+                                        <TextField
+                                            id="login-password"
+                                            label="Password"
+                                            type="password"
+                                            autoComplete="current-password"
+                                            variant="outlined"
+                                        />
+                                    </Grid>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
