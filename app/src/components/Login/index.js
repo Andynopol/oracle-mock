@@ -1,30 +1,74 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, requirePropFactory } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles( ( theme ) => ( {
+const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh'
+        height: '100vh',
+        position: 'relative'
     },
     glass: {
         minHeight: '80vh',
-        background: 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.3), rgba(255,255,255,0.7))',
-        borderRadius: '16px'
-    }
-} ) );
+        background: 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.4), rgba(255,255,255,0.5))',
+        borderRadius: '16px',
+        padding: '20px'
+    },
+    img: {
+        position: 'absolute',
+        top: '80px',
+        left: '-209px',
+        width: '-250px',
+        height: '250px',
+        zIndex: 3,
+        display: 'none',
+        [theme.breakpoints.up('md')]: {
+            display: 'block'
+        },
 
-export default function Login () {
+    },
+    logo: {
+        backgroundColor: 'transparent',
+        height: '100px',
+        width: '100%',
+        fontFamily: 'Agreement',
+        color: 'white',
+        fontSize: '60px',
+        fontWeight: '700',
+        userSelect: 'none',
+        display: 'flex',
+        justifyContent: "center",
+        alignItems: 'center',
+        transform: 'rotate(-10deg)'
+    },
+    innerSection: {
+        height: '100px',
+        height: '300px',
+        backgroundColor: 'red',
+    }
+}));
+
+export default function Login(props) {
+    const { panther } = props;
     const classes = useStyles();
     return (
         <Grid container>
             <Grid item xs={1} md={4} />
             <Grid item xs={10} md={4}>
-                <Grid container className={classes.root}>
-                    <Grid item xs={12} className={classes.glass}>
 
+                <Grid container className={classes.root}>
+                    <img className={classes.img} src={panther} alt="ceva" />
+                    <Grid item xs={12} className={classes.glass}>
+                        <Grid container direction="column" alignItems="center">
+                            <Grid item className={classes.logo}>
+                                To do app
+                            </Grid>
+                            <Grid item>
+                                <Grid container direction="column" ></Grid>
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Grid>
