@@ -1,7 +1,6 @@
 import React from 'react';
 import { Grid, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Spacer from '../Spacer';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -73,7 +72,6 @@ export default function Login(props) {
                             <Grid item className={classes.logo}>
                                 To do app
                             </Grid>
-                            <Spacer />
                             <Grid item>
                                 <Grid container direction="column" spacing={2} className={classes.fields}>
                                     <Grid item xs={12}>
