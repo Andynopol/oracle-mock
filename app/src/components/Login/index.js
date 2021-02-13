@@ -54,6 +54,16 @@ const useStyles = makeStyles((theme) => ({
     },
     wrapper: {
         minHeight: '100%',
+    },
+    authentificationFields: {
+        [theme.breakpoints.up('md')]: {
+            '&>label': {
+                transform: 'translate(14px, 13px) scale(1)',
+            },
+            '& input': {
+                padding: '10px 10px 10px 10px',
+            },
+        }
     }
 }));
 
@@ -76,11 +86,12 @@ export default function Login(props) {
                                 <Grid container direction="column" spacing={2} className={classes.fields}>
                                     <Grid item xs={12}>
                                         <TextField
-                                            id="ligin-user"
+                                            id="login-user"
                                             label="Username"
                                             type="text"
                                             autoComplete="current-password"
                                             variant="outlined"
+                                            className={classes.authentificationFields}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -91,6 +102,7 @@ export default function Login(props) {
                                             type="password"
                                             autoComplete="current-password"
                                             variant="outlined"
+                                            className={classes.authentificationFields}
                                         />
                                     </Grid>
                                 </Grid>
