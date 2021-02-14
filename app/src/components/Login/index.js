@@ -1,6 +1,7 @@
 import React from 'react';
-import { Grid, TextField } from '@material-ui/core';
+import { Grid, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -14,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
         minHeight: '80vh',
         background: 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.4), rgba(255,255,255,0.5))',
         borderRadius: '16px',
-        padding: '20px'
+        padding: '50px 20px 20px 20px'
     },
     img: {
         position: 'absolute',
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         alignItems: 'center',
         transform: 'rotate(-10deg)',
-        marginBottom: '100px',
+        marginBottom: '60px',
     },
     innerSection: {
         height: '100px',
@@ -65,6 +66,7 @@ const useStyles = makeStyles((theme) => ({
             },
         }
     }
+
 }));
 
 export default function Login(props) {
@@ -74,7 +76,6 @@ export default function Login(props) {
         <Grid container>
             <Grid item xs={1} md={4} />
             <Grid item xs={10} md={4}>
-
                 <Grid container className={classes.root}>
                     <img className={classes.img} src={panther} alt="ceva" />
                     <Grid item xs={12} className={classes.glass}>
@@ -82,28 +83,63 @@ export default function Login(props) {
                             <Grid item className={classes.logo}>
                                 To do app
                             </Grid>
-                            <Grid item>
+                            <Grid item xs={12}>
                                 <Grid container direction="column" spacing={2} className={classes.fields}>
-                                    <Grid item xs={12}>
-                                        <TextField
-                                            id="login-user"
-                                            label="Username"
-                                            type="text"
-                                            autoComplete="current-password"
-                                            variant="outlined"
-                                            className={classes.authentificationFields}
-                                        />
+                                    <Grid item xs={12} className={classes.w100}>
+                                        <Grid container justify="center">
+                                            <TextField
+                                                id="login-user"
+                                                label="Username"
+                                                type="text"
+                                                autoComplete="current-password"
+                                                variant="outlined"
+                                                className={classes.authentificationFields}
+                                            />
+                                        </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-
-                                        <TextField
-                                            id="login-password"
-                                            label="Password"
-                                            type="password"
-                                            autoComplete="current-password"
-                                            variant="outlined"
-                                            className={classes.authentificationFields}
-                                        />
+                                        <Grid container justify="center">
+                                            <TextField
+                                                id="login-password"
+                                                label="Password"
+                                                type="password"
+                                                autoComplete="current-password"
+                                                variant="outlined"
+                                                className={classes.authentificationFields}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Grid container justify="flex-start">
+                                            <FormControlLabel
+                                                value="end"
+                                                control={<Checkbox color="primary" />}
+                                                label="Remember me"
+                                                labelPlacement="end"
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Grid container justify="center">
+                                            In construction
+                                        </Grid>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Grid container>
+                                            <Grid item xs={4}>
+                                                <Grid container justify="center" alignItems="center">
+                                                    <Link to="/" className="router-link">
+                                                        <Button color="primary">Login</Button>
+                                                    </Link>
+                                                </Grid>
+                                            </Grid>
+                                            <Grid item xs={4} />
+                                            <Grid item xs={4}>
+                                                <Link to="/register" className="router-link">
+                                                    <Button color="default">Register</Button>
+                                                </Link>
+                                            </Grid>
+                                        </Grid>
                                     </Grid>
                                 </Grid>
                             </Grid>
