@@ -66,14 +66,13 @@ const useStyles = makeStyles( ( theme ) => ( {
         minHeight: '100%',
     },
     authentificationFields: {
-        [ theme.breakpoints.up( 'md' ) ]: {
-            '&>label': {
-                transform: 'translate(14px, 13px) scale(1)',
-            },
-            '& input': {
-                padding: '10px 10px 10px 10px',
-            },
-        }
+
+        '&>label': {
+            transform: 'translate(14px, 13px) scale(1)',
+        },
+        '& input': {
+            padding: '10px 10px 10px 10px',
+        },
     },
     spacer: {
         display: 'flex',
@@ -82,6 +81,11 @@ const useStyles = makeStyles( ( theme ) => ( {
     },
     mainContent: {
         width: '100%'
+    },
+    w100: {
+        '&>div': {
+            width: '100%',
+        }
     }
 
 } ) );

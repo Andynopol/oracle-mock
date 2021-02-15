@@ -12,7 +12,7 @@
 
 @media screen and (orientation: landscape) {
   #root {
-    height: 700px;
+    min-height: 700px;
   }
 }
 

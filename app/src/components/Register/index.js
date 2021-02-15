@@ -13,18 +13,17 @@ const useStyles = makeStyles( ( theme ) => ( {
     },
     glass: {
         position: 'relative',
-        height: '80vh',
         '@media screen and (orientation: landscape)': {
             marginTop: '50px',
-            height: '550px',
+            height: '630px',
         },
         [ theme.breakpoints.up( 'lg' ) ]: {
             height: '60vh',
         },
         background: 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.4), rgba(255,255,255,0.5))',
         borderRadius: '16px',
-        padding: '50px 20px 70px 20px',
-        maxWidth: '400px'
+        padding: '50px 20px 20px 20px',
+        maxWidth: '600px'
     },
     img: {
         position: 'absolute',
@@ -65,22 +64,41 @@ const useStyles = makeStyles( ( theme ) => ( {
         minHeight: '100%',
     },
     authentificationFields: {
-        [ theme.breakpoints.up( 'md' ) ]: {
-            '&>label': {
-                transform: 'translate(14px, 13px) scale(1)',
-            },
-            '& input': {
-                padding: '10px 10px 10px 10px',
-            },
-        }
+
+        '&>label': {
+            transform: 'translate(14px, 13px) scale(1)',
+        },
+        '& input': {
+            padding: '10px 10px 10px 10px',
+        },
     },
     spacer: {
-        display: 'flex',
-        flexDirection: 'column',
-        flex: 1,
+        display: 'none',
+        [ theme.breakpoints.up( 'md' ) ]: {
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 1,
+        }
+
     },
     mainContent: {
         width: '100%'
+    },
+    w100: {
+        '&>div': {
+            width: '100%',
+        }
+    },
+    controls: {
+        paddingTop: '20px',
+        marginBottom: '20px',
+        '&>div': {
+            display: 'flex',
+            justifyContent: 'flex-start',
+            [ theme.breakpoints.up( 'xs' ) ]: {
+                justifyContent: 'center'
+            }
+        }
     }
 
 } ) );
@@ -90,8 +108,8 @@ export default function Login ( props ) {
     const classes = useStyles();
     return (
         <Grid container>
-            <Grid item xs={1} md={4} />
-            <Grid item xs={10} md={4}>
+            <Grid item xs={1} md={2} />
+            <Grid item xs={10} md={8}>
                 <Grid container className={classes.root}>
 
                     <Grid item xs={12} className={classes.glass}>
@@ -102,12 +120,12 @@ export default function Login ( props ) {
                             </Grid>
                             <div className={classes.spacer}></div>
                             <Grid item xs={12} className={classes.mainContent}>
-                                <Grid container direction="column" spacing={2} className={classes.fields}>
-                                    <Grid item xs={12} className={classes.w100}>
-                                        <Grid container justify="center">
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} md={6}>
+                                        <Grid container className={classes.w100}>
                                             <TextField
                                                 id="login-user"
-                                                label="Username"
+                                                label="Username*"
                                                 type="text"
                                                 autoComplete="current-password"
                                                 variant="outlined"
@@ -115,11 +133,23 @@ export default function Login ( props ) {
                                             />
                                         </Grid>
                                     </Grid>
-                                    <Grid item xs={12}>
-                                        <Grid container justify="center">
+                                    <Grid item xs={12} md={6}>
+                                        <Grid container className={classes.w100}>
                                             <TextField
-                                                id="login-password"
-                                                label="Password"
+                                                id="login-user"
+                                                label="Email*"
+                                                type="mail"
+                                                autoComplete="current-password"
+                                                variant="outlined"
+                                                className={classes.authentificationFields}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                    <Grid item xs={12} md={6}>
+                                        <Grid container className={classes.w100}>
+                                            <TextField
+                                                id="login-user"
+                                                label="Password*"
                                                 type="password"
                                                 autoComplete="current-password"
                                                 variant="outlined"
@@ -127,40 +157,58 @@ export default function Login ( props ) {
                                             />
                                         </Grid>
                                     </Grid>
-                                    <Grid item xs={12}>
-                                        <Grid container justify="flex-start">
-                                            <Grid item xs={3} />
-                                            <Grid item xs={9}>
-                                                <FormControlLabel
-                                                    value="end"
-                                                    control={<Checkbox color="primary" />}
-                                                    label="Remember me"
-                                                    labelPlacement="end"
-                                                />
-                                            </Grid>
+                                    <Grid item xs={12} md={6}>
+                                        <Grid container className={classes.w100}>
+                                            <TextField
+                                                id="login-user"
+                                                label="Re-Password*"
+                                                type="password"
+                                                autoComplete="current-password"
+                                                variant="outlined"
+                                                className={classes.authentificationFields}
+                                            />
                                         </Grid>
                                     </Grid>
-                                    <Grid item xs={12}>
-                                        <Grid container justify="center">
-                                            In construction
+                                    <Grid item xs={12} md={6}>
+                                        <Grid container className={classes.w100}>
+                                            <TextField
+                                                id="login-user"
+                                                label="Website"
+                                                type="text"
+                                                autoComplete="current-password"
+                                                variant="outlined"
+                                                className={classes.authentificationFields}
+                                            />
                                         </Grid>
                                     </Grid>
+                                    <Grid item xs={12} md={6}>
+                                        <Grid container className={classes.w100}>
+                                            <TextField
+                                                id="login-user"
+                                                label="Phone"
+                                                type="phone"
+                                                autoComplete="current-password"
+                                                variant="outlined"
+                                                className={classes.authentificationFields}
+                                            />
+                                        </Grid>
+                                    </Grid>
+
                                     <Grid item xs={12}>
-                                        <Grid container>
-                                            <Grid item xs={1} md={2} />
-                                            <Grid item xs={3} md={2}>
-                                                <Grid container justify="center" alignItems="center">
+                                        <Grid container className={classes.controls}>
+                                            <Grid item xs={false} md={1} />
+                                            <Grid item xs={4} md={5}>
+                                                <Grid container alignItems="center">
                                                     <Link to="/login" className="router-link">
                                                         <Button color="default">Back</Button>
                                                     </Link>
                                                 </Grid>
                                             </Grid>
-                                            <Grid item xs={8}>
-                                                <Grid container justify="center">
-                                                    <Link to="/" className="router-link">
-                                                        <Button variant="contained" color="primary">Create Account</Button>
-                                                    </Link>
-                                                </Grid>
+                                            <Grid item xs={false} md={1} />
+                                            <Grid item xs={8} md={5}>
+                                                <Link to="/" className="router-link">
+                                                    <Button variant="contained" color="primary">Create Account</Button>
+                                                </Link>
                                             </Grid>
                                         </Grid>
                                     </Grid>
@@ -170,7 +218,7 @@ export default function Login ( props ) {
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item xs={1} md={4} />
+            <Grid item xs={1} md={2} />
         </Grid>
     );
 }
