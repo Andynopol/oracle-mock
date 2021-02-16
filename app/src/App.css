@@ -5,14 +5,17 @@
 
 #root {
   width: 100%;
-  min-height: 100vh;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
   background: -webkit-gradient(linear, left bottom, right top, from(#ffbff6), to(#f58ade));
   background: linear-gradient(to right top, #ffbff6, #f58ade);
 }
 
-@media screen and (orientation: landscape) {
+@media only screen and (max-width: 920px) and (orientation: landscape) {
   #root {
-    height: 700px;
+    min-height: 600px;
+    max-height: 700px;
   }
 }
 

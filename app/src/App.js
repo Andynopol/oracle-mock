@@ -1,9 +1,25 @@
 import './App.css';
 import Main from './components/Main';
+import { makeStyles } from '@material-ui/core/styles';
 
-function App() {
+const useStyles = makeStyles( ( theme ) => ( {
+  main: {
+    [ theme.breakpoints.up( 'md' ) ]: {
+      minHeight: '100vh'
+    },
+    minHeight: '600px',
+
+    width: '100%',
+  }
+} ) );
+
+function App () {
+  const classes = useStyles();
   return (
-    <Main />
+    <main className={classes.main}>
+      <Main />
+    </main>
+
   );
 }
 

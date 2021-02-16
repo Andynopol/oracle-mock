@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
@@ -13,13 +13,9 @@ const useStyles = makeStyles( ( theme ) => ( {
     },
     glass: {
         position: 'relative',
-        height: '80vh',
+        height: '500px',
         '@media screen and (orientation: landscape)': {
-            marginTop: '50px',
-            height: '550px',
-        },
-        [ theme.breakpoints.up( 'lg' ) ]: {
-            height: '60vh',
+            marginTop: '20px',
         },
         background: 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.4), rgba(255,255,255,0.5))',
         borderRadius: '16px',
@@ -55,7 +51,6 @@ const useStyles = makeStyles( ( theme ) => ( {
         marginBottom: '60px',
     },
     innerSection: {
-        height: '100px',
         height: '300px',
         backgroundColor: 'red',
     },
@@ -66,14 +61,13 @@ const useStyles = makeStyles( ( theme ) => ( {
         minHeight: '100%',
     },
     authentificationFields: {
-        [ theme.breakpoints.up( 'md' ) ]: {
-            '&>label': {
-                transform: 'translate(14px, 13px) scale(1)',
-            },
-            '& input': {
-                padding: '10px 10px 10px 10px',
-            },
-        }
+
+        '&>label': {
+            transform: 'translate(14px, 13px) scale(1)',
+        },
+        '& input': {
+            padding: '10px 10px 10px 10px',
+        },
     },
     spacer: {
         display: 'flex',
@@ -82,13 +76,61 @@ const useStyles = makeStyles( ( theme ) => ( {
     },
     mainContent: {
         width: '100%'
+    },
+    w100: {
+        '&>div': {
+            width: '100%',
+        }
     }
 
 } ) );
 
 export default function Login ( props ) {
-    const { panther } = props;
+    const { panther, setAuth } = props;
     const classes = useStyles();
+
+
+
+    const [ user, setUser ] = useState( { username: '', password: '' } );
+
+
+
+    useEffect( () => {
+        console.log( user );
+    }, [ user ] );
+
+
+    const handleOnChange = ( event ) => {
+        event.persist();
+        user[ event.target.name ] = event.target.value;
+        setUser( { ...user } );
+    };
+
+
+    const handleClickLogin = async () => {
+        console.log( user );
+        if ( user.username && user.password )
+        {
+            const options = {
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                method: 'POST',
+                body: JSON.stringify( user )
+            };
+            const response = await ( await fetch( '/login-user', options ) ).json();
+            if ( response.status === 'success' )
+            {
+                setAuth( { ...response.userData } );
+            }
+        }
+        else
+        {
+            alert( "Complete both the Username and the Password fields" );
+        }
+    };
+
+
     return (
         <Grid container>
             <Grid item xs={1} md={4} />
@@ -113,6 +155,8 @@ export default function Login ( props ) {
                                                 autoComplete="current-password"
                                                 variant="outlined"
                                                 className={classes.authentificationFields}
+                                                name="username"
+                                                onChange={handleOnChange}
                                             />
                                         </Grid>
                                     </Grid>
@@ -125,6 +169,8 @@ export default function Login ( props ) {
                                                 autoComplete="current-password"
                                                 variant="outlined"
                                                 className={classes.authentificationFields}
+                                                name="password"
+                                                onChange={handleOnChange}
                                             />
                                         </Grid>
                                     </Grid>
@@ -148,20 +194,20 @@ export default function Login ( props ) {
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Grid container>
-                                            <Grid item xs={2} />
+                                            <Grid item xs={1} />
                                             <Grid item xs={4}>
                                                 <Grid container justify="center" alignItems="center">
-                                                    <Link to="/" className="router-link">
-                                                        <Button variant="contained" color="primary">Login</Button>
-                                                    </Link>
+                                                    <Button variant="contained" color="primary" onClick={handleClickLogin}>Login</Button>
                                                 </Grid>
                                             </Grid>
-                                            <Grid item xs={2} />
+                                            <Grid item xs={1} />
+                                            <Grid item xs={1} />
                                             <Grid item xs={4}>
                                                 <Link to="/register" className="router-link">
                                                     <Button color="default">Register</Button>
                                                 </Link>
                                             </Grid>
+                                            <Grid item xs={1} />
                                         </Grid>
                                     </Grid>
                                 </Grid>
