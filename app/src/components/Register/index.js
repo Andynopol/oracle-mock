@@ -125,7 +125,6 @@ export default function Login ( props ) {
                                     <Grid item xs={12} md={6}>
                                         <Grid container className={classes.w100}>
                                             <TextField
-                                                id="login-user"
                                                 label="Username*"
                                                 type="text"
                                                 autoComplete="current-password"
@@ -137,7 +136,6 @@ export default function Login ( props ) {
                                     <Grid item xs={12} md={6}>
                                         <Grid container className={classes.w100}>
                                             <TextField
-                                                id="login-user"
                                                 label="Email*"
                                                 type="mail"
                                                 autoComplete="current-password"
@@ -149,7 +147,6 @@ export default function Login ( props ) {
                                     <Grid item xs={12} md={6}>
                                         <Grid container className={classes.w100}>
                                             <TextField
-                                                id="login-user"
                                                 label="Password*"
                                                 type="password"
                                                 autoComplete="current-password"
@@ -161,7 +158,6 @@ export default function Login ( props ) {
                                     <Grid item xs={12} md={6}>
                                         <Grid container className={classes.w100}>
                                             <TextField
-                                                id="login-user"
                                                 label="Re-Password*"
                                                 type="password"
                                                 autoComplete="current-password"
@@ -173,7 +169,6 @@ export default function Login ( props ) {
                                     <Grid item xs={12} md={6}>
                                         <Grid container className={classes.w100}>
                                             <TextField
-                                                id="login-user"
                                                 label="Website"
                                                 type="text"
                                                 autoComplete="current-password"
@@ -185,7 +180,6 @@ export default function Login ( props ) {
                                     <Grid item xs={12} md={6}>
                                         <Grid container className={classes.w100}>
                                             <TextField
-                                                id="login-user"
                                                 label="Phone"
                                                 type="phone"
                                                 autoComplete="current-password"
