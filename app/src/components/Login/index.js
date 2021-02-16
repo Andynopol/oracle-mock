@@ -148,7 +148,7 @@ export default function Login ( props ) {
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Grid container>
-                                            <Grid item xs={2} />
+                                            <Grid item xs={1} />
                                             <Grid item xs={4}>
                                                 <Grid container justify="center" alignItems="center">
                                                     <Link to="/" className="router-link">
@@ -156,12 +156,14 @@ export default function Login ( props ) {
                                                     </Link>
                                                 </Grid>
                                             </Grid>
-                                            <Grid item xs={2} />
+                                            <Grid item xs={1} />
+                                            <Grid item xs={1} />
                                             <Grid item xs={4}>
                                                 <Link to="/register" className="router-link">
                                                     <Button color="default">Register</Button>
                                                 </Link>
                                             </Grid>
+                                            <Grid item xs={1} />
                                         </Grid>
                                     </Grid>
                                 </Grid>
