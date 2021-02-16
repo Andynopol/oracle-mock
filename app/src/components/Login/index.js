@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
@@ -51,7 +51,6 @@ const useStyles = makeStyles( ( theme ) => ( {
         marginBottom: '60px',
     },
     innerSection: {
-        height: '100px',
         height: '300px',
         backgroundColor: 'red',
     },
@@ -87,8 +86,51 @@ const useStyles = makeStyles( ( theme ) => ( {
 } ) );
 
 export default function Login ( props ) {
-    const { panther } = props;
+    const { panther, setAuth } = props;
     const classes = useStyles();
+
+
+
+    const [ user, setUser ] = useState( { username: '', password: '' } );
+
+
+
+    useEffect( () => {
+        console.log( user );
+    }, [ user ] );
+
+
+    const handleOnChange = ( event ) => {
+        event.persist();
+        user[ event.target.name ] = event.target.value;
+        setUser( { ...user } );
+    };
+
+
+    const handleClickLogin = async () => {
+        console.log( user );
+        if ( user.username && user.password )
+        {
+            const options = {
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                method: 'POST',
+                body: JSON.stringify( user )
+            };
+            const response = await ( await fetch( '/login-user', options ) ).json();
+            if ( response.status === 'success' )
+            {
+                setAuth( { ...response.userData } );
+            }
+        }
+        else
+        {
+            alert( "Complete both the Username and the Password fields" );
+        }
+    };
+
+
     return (
         <Grid container>
             <Grid item xs={1} md={4} />
@@ -113,6 +155,8 @@ export default function Login ( props ) {
                                                 autoComplete="current-password"
                                                 variant="outlined"
                                                 className={classes.authentificationFields}
+                                                name="username"
+                                                onChange={handleOnChange}
                                             />
                                         </Grid>
                                     </Grid>
@@ -125,6 +169,8 @@ export default function Login ( props ) {
                                                 autoComplete="current-password"
                                                 variant="outlined"
                                                 className={classes.authentificationFields}
+                                                name="password"
+                                                onChange={handleOnChange}
                                             />
                                         </Grid>
                                     </Grid>
@@ -151,9 +197,7 @@ export default function Login ( props ) {
                                             <Grid item xs={1} />
                                             <Grid item xs={4}>
                                                 <Grid container justify="center" alignItems="center">
-                                                    <Link to="/" className="router-link">
-                                                        <Button variant="contained" color="primary">Login</Button>
-                                                    </Link>
+                                                    <Button variant="contained" color="primary" onClick={handleClickLogin}>Login</Button>
                                                 </Grid>
                                             </Grid>
                                             <Grid item xs={1} />
