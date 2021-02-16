@@ -18,6 +18,9 @@ const useStyles = makeStyles( ( theme ) => ( {
             height: '630px',
         },
         [ theme.breakpoints.up( 'lg' ) ]: {
+            height: '80vh',
+        },
+        [ theme.breakpoints.up( 'xl' ) ]: {
             height: '60vh',
         },
         background: 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.4), rgba(255,255,255,0.5))',
