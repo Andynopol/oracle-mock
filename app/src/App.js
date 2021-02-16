@@ -8,6 +8,7 @@ const useStyles = makeStyles( ( theme ) => ( {
       minHeight: '100vh'
     },
     minHeight: '600px',
+
     width: '100%',
   }
 } ) );

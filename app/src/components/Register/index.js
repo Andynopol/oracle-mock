@@ -16,6 +16,7 @@ const useStyles = makeStyles( ( theme ) => ( {
         height: '600px',
         '@media screen and (orientation: landscape)': {
             marginTop: '50px',
+            height: '535px'
         },
         background: 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.4), rgba(255,255,255,0.5))',
         borderRadius: '16px',
@@ -36,6 +37,9 @@ const useStyles = makeStyles( ( theme ) => ( {
 
     },
     logo: {
+        '@media screen and (orientation: landscape)': {
+            marginBottom: '10px'
+        },
         backgroundColor: 'transparent',
         height: '100px',
         width: '100%',
