@@ -4,17 +4,6 @@
 }
 
 
-#root {
-    width: 100%;
-    height: fit-content;
-    background: linear-gradient(to right top, #ffbff6, #f58ade);
-    @media only screen and (max-width: 920px) {
-        @media screen and (orientation:landscape) { 
-            min-height: 700px;
-        }
-    }
-    
-}
 
 .router-link {
     text-decoration: none;
