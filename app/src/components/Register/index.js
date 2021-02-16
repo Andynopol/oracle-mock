@@ -22,7 +22,7 @@ const useStyles = makeStyles( ( theme ) => ( {
         },
         background: 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.4), rgba(255,255,255,0.5))',
         borderRadius: '16px',
-        padding: '50px 20px 20px 20px',
+        padding: '20px 20px 20px 20px',
         maxWidth: '600px'
     },
     img: {
@@ -90,7 +90,7 @@ const useStyles = makeStyles( ( theme ) => ( {
         }
     },
     controls: {
-        paddingTop: '20px',
+        marginTop: '20px',
         marginBottom: '20px',
         '&>div': {
             display: 'flex',
@@ -99,7 +99,7 @@ const useStyles = makeStyles( ( theme ) => ( {
                 justifyContent: 'center'
             }
         }
-    }
+    },
 
 } ) );
 
@@ -197,17 +197,17 @@ export default function Login ( props ) {
                                     <Grid item xs={12}>
                                         <Grid container className={classes.controls}>
                                             <Grid item xs={false} md={1} />
-                                            <Grid item xs={4} md={5}>
+                                            <Grid item xs={2} md={5}>
                                                 <Grid container alignItems="center">
                                                     <Link to="/login" className="router-link">
                                                         <Button color="default">Back</Button>
                                                     </Link>
                                                 </Grid>
                                             </Grid>
-                                            <Grid item xs={false} md={1} />
+                                            <Grid item xs={2} md={1} />
                                             <Grid item xs={8} md={5}>
                                                 <Link to="/" className="router-link">
-                                                    <Button variant="contained" color="primary">Create Account</Button>
+                                                    <Button variant="contained" color="primary" className={classes.register}>Create Account</Button>
                                                 </Link>
                                             </Grid>
                                         </Grid>
