@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Grid, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
@@ -101,11 +101,20 @@ const useStyles = makeStyles( ( theme ) => ( {
             }
         }
     },
+    invalidField: {
+        '&>label': {
+            color: 'red',
+        },
+        '& fieldset': {
+            borderColor: 'rgba(255, 0, 0, 0.5)',
+        }
+    }
 
 } ) );
 
 export default function Login ( props ) {
     const { panther } = props;
+    const [ invalidFiedlds, setInvalidFields ] = useState( { username: false, email: false, password: false, repassword: false } );
     const classes = useStyles();
     return (
         <Grid container>
@@ -127,9 +136,9 @@ export default function Login ( props ) {
                                             <TextField
                                                 label="Username*"
                                                 type="text"
-                                                autoComplete="current-password"
                                                 variant="outlined"
-                                                className={classes.authentificationFields}
+                                                className={`${ classes.authentificationFields } ${ invalidFiedlds.username ? classes.invalidField : '' }`}
+                                                name='username'
                                             />
                                         </Grid>
                                     </Grid>
@@ -138,9 +147,9 @@ export default function Login ( props ) {
                                             <TextField
                                                 label="Email*"
                                                 type="mail"
-                                                autoComplete="current-password"
                                                 variant="outlined"
-                                                className={classes.authentificationFields}
+                                                className={`${ classes.authentificationFields } ${ invalidFiedlds.email ? classes.invalidField : '' }`}
+                                                name='email'
                                             />
                                         </Grid>
                                     </Grid>
@@ -149,9 +158,9 @@ export default function Login ( props ) {
                                             <TextField
                                                 label="Password*"
                                                 type="password"
-                                                autoComplete="current-password"
                                                 variant="outlined"
-                                                className={classes.authentificationFields}
+                                                className={`${ classes.authentificationFields } ${ invalidFiedlds.password ? classes.invalidField : '' }`}
+                                                name="password"
                                             />
                                         </Grid>
                                     </Grid>
@@ -160,9 +169,9 @@ export default function Login ( props ) {
                                             <TextField
                                                 label="Re-Password*"
                                                 type="password"
-                                                autoComplete="current-password"
                                                 variant="outlined"
-                                                className={classes.authentificationFields}
+                                                className={`${ classes.authentificationFields } ${ invalidFiedlds.repassword ? classes.invalidField : '' }`}
+                                                name="repassowrd"
                                             />
                                         </Grid>
                                     </Grid>
@@ -171,7 +180,6 @@ export default function Login ( props ) {
                                             <TextField
                                                 label="Website"
                                                 type="text"
-                                                autoComplete="current-password"
                                                 variant="outlined"
                                                 className={classes.authentificationFields}
                                             />
@@ -182,7 +190,6 @@ export default function Login ( props ) {
                                             <TextField
                                                 label="Phone"
                                                 type="phone"
-                                                autoComplete="current-password"
                                                 variant="outlined"
                                                 className={classes.authentificationFields}
                                             />

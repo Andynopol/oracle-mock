@@ -35,7 +35,7 @@ app.post( '/register-user', cors(), async ( req, res ) => {
     try
     {
         const hashedPass = await bcrypt.hash( req.body.password, 10 );
-        const user = { username: req.body.username, password: hashedPass };
+        const user = { username: req.body.username, password: hashedPass, todos: {} };
         database.find( { username: user.username }, function ( err, docs ) {
             console.log( docs );
             if ( docs[ 0 ] )
@@ -64,9 +64,9 @@ app.post( '/login-user', cors(), ( req, res ) => {
             {
                 return res.status( 201 ).send( { statusCode: 201, status: 'success', message: "user logged in", userData: docs[ 0 ] } );
             }
-            return res.status( 201 ).send( { statusCode: 201, status: 'failed', message: "passwords don't match" } );
+            return res.status( 201 ).send( { statusCode: 201, status: 'failed', message: "Incorrect password" } );
         }
-        return res.status( 201 ).send( { statusCode: 201, status: 'failed', message: "no user foundh" } );
+        return res.status( 201 ).send( { statusCode: 201, status: 'failed', message: "Incorrect username" } );
 
     } );
 } );

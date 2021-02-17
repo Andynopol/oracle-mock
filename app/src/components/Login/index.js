@@ -81,6 +81,17 @@ const useStyles = makeStyles( ( theme ) => ( {
         '&>div': {
             width: '100%',
         }
+    },
+    failLogin: {
+        color: 'red',
+    },
+    invalidField: {
+        '&>label': {
+            color: 'red',
+        },
+        '& fieldset': {
+            borderColor: 'rgba(255, 0, 0, 0.5)',
+        }
     }
 
 } ) );
@@ -92,6 +103,8 @@ export default function Login ( props ) {
 
 
     const [ user, setUser ] = useState( { username: '', password: '' } );
+    const [ failLoginMessage, setFailLoginMessage ] = useState( '' );
+    const [ invalidFiedlds, setInvalidFiedls ] = useState( { username: false, password: false } );
 
 
 
@@ -121,13 +134,37 @@ export default function Login ( props ) {
             const response = await ( await fetch( '/login-user', options ) ).json();
             if ( response.status === 'success' )
             {
+                setFailLoginMessage( '' );
                 setAuth( { ...response.userData } );
+            }
+            else
+            {
+                setFailLoginMessage( response.message );
             }
         }
         else
         {
-            alert( "Complete both the Username and the Password fields" );
+            if ( !user.username && !user.password )
+            {
+                setInvalidFiedls( { username: true, password: true } );
+            }
+            else if ( !user.username )
+            {
+                invalidFiedlds.username = true;
+                setInvalidFiedls( { ...invalidFiedlds } );
+            }
+            else if ( !user.passowrd )
+            {
+                invalidFiedlds.password = true;
+                setInvalidFiedls( { ...invalidFiedlds } );
+            }
         }
+    };
+
+    const removeInvalid = ( event ) => {
+        event.persist();
+        invalidFiedlds[ event.target.name ] = false;
+        setInvalidFiedls( { ...invalidFiedlds } );
     };
 
 
@@ -152,11 +189,11 @@ export default function Login ( props ) {
                                                 id="login-user"
                                                 label="Username"
                                                 type="text"
-                                                autoComplete="current-password"
                                                 variant="outlined"
-                                                className={classes.authentificationFields}
+                                                className={`${ classes.authentificationFields } ${ invalidFiedlds.username ? classes.invalidField : '' }`}
                                                 name="username"
                                                 onChange={handleOnChange}
+                                                onSelect={removeInvalid}
                                             />
                                         </Grid>
                                     </Grid>
@@ -166,11 +203,11 @@ export default function Login ( props ) {
                                                 id="login-password"
                                                 label="Password"
                                                 type="password"
-                                                autoComplete="current-password"
                                                 variant="outlined"
-                                                className={classes.authentificationFields}
+                                                className={`${ classes.authentificationFields } ${ invalidFiedlds.password ? classes.invalidField : '' }`}
                                                 name="password"
                                                 onChange={handleOnChange}
+                                                onSelect={removeInvalid}
                                             />
                                         </Grid>
                                     </Grid>
@@ -188,8 +225,8 @@ export default function Login ( props ) {
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <Grid container justify="center">
-                                            In construction
+                                        <Grid container justify="center" className={classes.failLogin}>
+                                            {failLoginMessage}
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
