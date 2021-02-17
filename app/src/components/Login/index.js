@@ -102,9 +102,9 @@ export default function Login ( props ) {
 
 
 
-    const [ user, setUser ] = useState( { username: '', password: '' } );
+    const [ user, setUser ] = useState( { username: null, password: null } );
     const [ failLoginMessage, setFailLoginMessage ] = useState( '' );
-    const [ invalidFiedlds, setInvalidFiedls ] = useState( { username: false, password: false } );
+    const [ invalidFields, setInvalidFields ] = useState( { username: false, password: false } );
 
 
 
@@ -144,27 +144,23 @@ export default function Login ( props ) {
         }
         else
         {
-            if ( !user.username && !user.password )
+            for ( let key in user )
             {
-                setInvalidFiedls( { username: true, password: true } );
+                console.log( !user[ key ] );
+                if ( !user[ key ] )
+                {
+                    console.log( invalidFields[ key ] );
+                    invalidFields[ key ] = true;
+                }
             }
-            else if ( !user.username )
-            {
-                invalidFiedlds.username = true;
-                setInvalidFiedls( { ...invalidFiedlds } );
-            }
-            else if ( !user.passowrd )
-            {
-                invalidFiedlds.password = true;
-                setInvalidFiedls( { ...invalidFiedlds } );
-            }
+            setInvalidFields( { ...invalidFields } );
         }
     };
 
     const removeInvalid = ( event ) => {
         event.persist();
-        invalidFiedlds[ event.target.name ] = false;
-        setInvalidFiedls( { ...invalidFiedlds } );
+        invalidFields[ event.target.name ] = false;
+        setInvalidFields( { ...invalidFields } );
     };
 
 
@@ -190,7 +186,7 @@ export default function Login ( props ) {
                                                 label="Username"
                                                 type="text"
                                                 variant="outlined"
-                                                className={`${ classes.authentificationFields } ${ invalidFiedlds.username ? classes.invalidField : '' }`}
+                                                className={`${ classes.authentificationFields } ${ invalidFields.username ? classes.invalidField : '' }`}
                                                 name="username"
                                                 onChange={handleOnChange}
                                                 onSelect={removeInvalid}
@@ -204,7 +200,7 @@ export default function Login ( props ) {
                                                 label="Password"
                                                 type="password"
                                                 variant="outlined"
-                                                className={`${ classes.authentificationFields } ${ invalidFiedlds.password ? classes.invalidField : '' }`}
+                                                className={`${ classes.authentificationFields } ${ invalidFields.password ? classes.invalidField : '' }`}
                                                 name="password"
                                                 onChange={handleOnChange}
                                                 onSelect={removeInvalid}

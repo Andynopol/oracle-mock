@@ -17,11 +17,11 @@ export default function Main () {
     return (
         <Router>
             <Switch>
-                <Route path="/" exact component={Home} />
                 <Route path="/login" render={() => <Login panther={panther} setAuth={setAuth} />} />
-                <Route path="/register" render={() => <Register panther={panther} />} />
+                <Route path="/user" component={Home} />
+                <Route path="/register" render={() => <Register panther={panther} setAuth={setAuth} />} />
             </Switch>
-            {!auth ? <Redirect to="/login" /> : <Redirect to="/" />}
+            {!auth ? <Redirect to="/login" /> : <Redirect to="/user" />}
         </Router>
     );
 }

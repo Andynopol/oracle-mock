@@ -1,7 +1,8 @@
 const express = require( 'express' );
 const bcrypt = require( 'bcrypt' );
 const datastore = require( 'nedb' );
-var cors = require( 'cors' );
+const cors = require( 'cors' );
+const path = require( 'path' );
 
 const app = express();
 
@@ -21,6 +22,10 @@ app.listen( PORT, () => console.log( `listening at ${ PORT }` ) );
 app.use( express.static( '../build' ) );
 
 
+// return index every time
+// app.use( '../build', express.static( path.join( '../ build', __dirname ) ) );
+
+
 //login path
 app.get( '/users', ( req, res ) => {
     database.find( {}, ( err, docs ) => {
@@ -35,7 +40,14 @@ app.post( '/register-user', cors(), async ( req, res ) => {
     try
     {
         const hashedPass = await bcrypt.hash( req.body.password, 10 );
-        const user = { username: req.body.username, password: hashedPass, todos: {} };
+        const user = {
+            username: req.body.username,
+            password: hashedPass,
+            email: req.body.email,
+            site: req.body.site,
+            phone: req.body.phone,
+            todos: {}
+        };
         database.find( { username: user.username }, function ( err, docs ) {
             console.log( docs );
             if ( docs[ 0 ] )
@@ -43,7 +55,7 @@ app.post( '/register-user', cors(), async ( req, res ) => {
                 return res.status( 201 ).send( { statusCode: 201, status: 'failed', message: "Username already in use" } );;
             }
             database.insert( user );
-            res.status( 201 ).send( { statusCode: 201, status: 'succes' } );
+            res.status( 201 ).send( { statusCode: 201, status: 'success' } );
         } );
 
 

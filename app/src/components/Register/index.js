@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
@@ -113,9 +113,82 @@ const useStyles = makeStyles( ( theme ) => ( {
 } ) );
 
 export default function Login ( props ) {
-    const { panther } = props;
-    const [ invalidFiedlds, setInvalidFields ] = useState( { username: false, email: false, password: false, repassword: false } );
+    const { panther, setAuth } = props;
+    const [ user, setUser ] = useState( { username: null, email: null, password: null, repassword: null, phone: null, site: null } );
+    const [ invalidFields, setInvalidFields ] = useState( { username: false, email: false, password: false, repassword: false } );
+    const [ registerMessage, setRegisterMessage ] = useState( '' );
+
     const classes = useStyles();
+
+    const handleFieldOnChange = ( event ) => {
+        event.persist();
+
+        user[ event.target.name ] = event.target.value;
+        setUser( { ...user } );
+    };
+
+    useEffect( () => {
+        console.log( user );
+    }, [ user ] );
+
+
+    const handleRegister = async () => {
+        console.log( user );
+        if ( user.username && user.email && user.password && user.repassword )
+        {
+            const registerOptions = {
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                method: 'POST',
+                body: JSON.stringify( user )
+            };
+            const response = await ( await fetch( '/register-user', registerOptions ) ).json();
+            console.log( response );
+            if ( response.status === 'success' )
+            {
+                const loginOptions = {
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    method: 'POST',
+                    body: JSON.stringify( { username: user.username, password: user.password } )
+                };
+                setRegisterMessage( '' );
+                const loginResponse = await ( await fetch( '/login-user', loginOptions ) ).json();
+                console.log( loginResponse );
+                if ( loginResponse.status === 'success' )
+                {
+                    setAuth( { ...loginResponse.userData } );
+                }
+            }
+            else
+            {
+                setRegisterMessage( response.message );
+            }
+        }
+        else
+        {
+            for ( let key in user )
+            {
+                console.log( !user[ key ] );
+                if ( !user[ key ] )
+                {
+                    console.log( invalidFields[ key ] );
+                    invalidFields[ key ] = true;
+                }
+            }
+            setInvalidFields( { ...invalidFields } );
+        }
+    };
+
+
+    const removeInvalid = ( event ) => {
+        event.persist();
+        invalidFields[ event.target.name ] = false;
+        setInvalidFields( { ...invalidFields } );
+    };
+
     return (
         <Grid container>
             <Grid item xs={1} md={2} />
@@ -137,8 +210,10 @@ export default function Login ( props ) {
                                                 label="Username*"
                                                 type="text"
                                                 variant="outlined"
-                                                className={`${ classes.authentificationFields } ${ invalidFiedlds.username ? classes.invalidField : '' }`}
+                                                className={`${ classes.authentificationFields } ${ invalidFields.username ? classes.invalidField : '' }`}
                                                 name='username'
+                                                onFocus={removeInvalid}
+                                                onChange={handleFieldOnChange}
                                             />
                                         </Grid>
                                     </Grid>
@@ -148,8 +223,10 @@ export default function Login ( props ) {
                                                 label="Email*"
                                                 type="mail"
                                                 variant="outlined"
-                                                className={`${ classes.authentificationFields } ${ invalidFiedlds.email ? classes.invalidField : '' }`}
+                                                className={`${ classes.authentificationFields } ${ invalidFields.email ? classes.invalidField : '' }`}
                                                 name='email'
+                                                onFocus={removeInvalid}
+                                                onChange={handleFieldOnChange}
                                             />
                                         </Grid>
                                     </Grid>
@@ -159,8 +236,10 @@ export default function Login ( props ) {
                                                 label="Password*"
                                                 type="password"
                                                 variant="outlined"
-                                                className={`${ classes.authentificationFields } ${ invalidFiedlds.password ? classes.invalidField : '' }`}
+                                                className={`${ classes.authentificationFields } ${ invalidFields.password ? classes.invalidField : '' }`}
                                                 name="password"
+                                                onFocus={removeInvalid}
+                                                onChange={handleFieldOnChange}
                                             />
                                         </Grid>
                                     </Grid>
@@ -170,8 +249,10 @@ export default function Login ( props ) {
                                                 label="Re-Password*"
                                                 type="password"
                                                 variant="outlined"
-                                                className={`${ classes.authentificationFields } ${ invalidFiedlds.repassword ? classes.invalidField : '' }`}
-                                                name="repassowrd"
+                                                className={`${ classes.authentificationFields } ${ invalidFields.repassword ? classes.invalidField : '' }`}
+                                                name="repassword"
+                                                onFocus={removeInvalid}
+                                                onChange={handleFieldOnChange}
                                             />
                                         </Grid>
                                     </Grid>
@@ -182,6 +263,8 @@ export default function Login ( props ) {
                                                 type="text"
                                                 variant="outlined"
                                                 className={classes.authentificationFields}
+                                                name="site"
+                                                onChange={handleFieldOnChange}
                                             />
                                         </Grid>
                                     </Grid>
@@ -192,6 +275,8 @@ export default function Login ( props ) {
                                                 type="phone"
                                                 variant="outlined"
                                                 className={classes.authentificationFields}
+                                                name="phone"
+                                                onChange={handleFieldOnChange}
                                             />
                                         </Grid>
                                     </Grid>
@@ -208,9 +293,12 @@ export default function Login ( props ) {
                                             </Grid>
                                             <Grid item xs={2} md={1} />
                                             <Grid item xs={8} md={5}>
-                                                <Link to="/" className="router-link">
-                                                    <Button variant="contained" color="primary" className={classes.register}>Create Account</Button>
-                                                </Link>
+                                                <Button
+                                                    variant="contained"
+                                                    color="primary"
+                                                    className={classes.register}
+                                                    onClick={handleRegister}
+                                                >Create Account</Button>
                                             </Grid>
                                         </Grid>
                                     </Grid>
