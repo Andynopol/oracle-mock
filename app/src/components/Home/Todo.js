@@ -8,18 +8,38 @@ const useStyles = makeStyles( () => ( {
         background: 'white',
         height: '3rem',
         border: '1px solid lightgrey',
+        userSelect: 'none',
+    },
+    titleWrapper: {
+        fontWeight: 'bold',
+        color: 'black',
+        fontSize: '1.2rem',
+        paddingRight: '.5rem'
     },
     title: {
-        paddingLeft: "1rem",
-        overflow: 'hidden'
+        padding: "0 .5rem",
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
     },
     status: {
-
+        paddingRight: '.5rem',
+        '&>div': {
+            background: 'gold',
+            color: 'green',
+            borderRadius: '.5rem',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            textTransform: 'lowercase',
+            fontWeight: 'bold',
+            maxWidth: '200px'
+        }
     },
     date: {
         display: 'flex',
         justifyContent: 'flex-end',
         paddingRight: '1rem',
+
     }
 
 } ) );
@@ -30,9 +50,19 @@ export default function Todo ( props ) {
     const classes = useStyles();
     return (
         <Grid container className={classes.root}>
-            <Grid item xs={5} md={6} className={classes.title}>{title}</Grid>
-            <Grid item xs={4} md={3} className={classes.status}>{completed ? <div>completed</div> : null}</Grid>
-            <Grid item xs={3} className={classes.date}>{date}</Grid>
+            <Grid item xs={5} md={6} className={classes.titleWrapper}>
+                <Grid container className={classes.title}>
+                    {title}
+                </Grid>
+            </Grid>
+            <Grid item xs={4} md={3} className={classes.status}>
+                {completed ? <Grid container>completed</Grid> : null}
+            </Grid>
+            <Grid item xs={3} className={classes.date}>
+                <Grid container justify="flex-end">
+                    {date}
+                </Grid>
+            </Grid>
         </Grid>
     );
 }
