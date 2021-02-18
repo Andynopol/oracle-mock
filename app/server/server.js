@@ -26,7 +26,7 @@ app.use( express.static( '../build' ) );
 // app.use( '../build', express.static( path.join( '../ build', __dirname ) ) );
 
 
-//login path
+//users path
 app.get( '/users', ( req, res ) => {
     database.find( {}, ( err, docs ) => {
         res.json( docs );
@@ -66,6 +66,7 @@ app.post( '/register-user', cors(), async ( req, res ) => {
     }
 } );
 
+//login path
 app.post( '/login-user', cors(), ( req, res ) => {
     database.find( { username: req.body.username }, async function ( err, docs ) {
         console.log( docs );
@@ -74,7 +75,12 @@ app.post( '/login-user', cors(), ( req, res ) => {
             console.log( docs );
             if ( await bcrypt.compare( req.body.password, docs[ 0 ].password ) )
             {
-                return res.status( 201 ).send( { statusCode: 201, status: 'success', message: "user logged in", userData: docs[ 0 ] } );
+                return res.status( 201 ).send( {
+                    statusCode: 201,
+                    status: 'success',
+                    message: "user logged in",
+                    userData: { todos: docs[ 0 ].todos, id: docs[ 0 ]._id }
+                } );
             }
             return res.status( 201 ).send( { statusCode: 201, status: 'failed', message: "Incorrect password" } );
         }

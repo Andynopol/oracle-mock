@@ -4,19 +4,8 @@
 }
 
 #root {
-  width: 100%;
-  height: -webkit-fit-content;
-  height: -moz-fit-content;
-  height: fit-content;
   background: -webkit-gradient(linear, left bottom, right top, from(#ffbff6), to(#f58ade));
   background: linear-gradient(to right top, #ffbff6, #f58ade);
-}
-
-@media only screen and (max-width: 920px) and (orientation: landscape) {
-  #root {
-    min-height: 600px;
-    max-height: 700px;
-  }
 }
 
 .router-link {

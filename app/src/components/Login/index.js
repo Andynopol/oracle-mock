@@ -4,6 +4,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles( ( theme ) => ( {
+    main: {
+        [ theme.breakpoints.up( 'md' ) ]: {
+            minHeight: '100vh'
+        },
+        minHeight: '600px',
+        // background: 'linear-gradient(to right top,#ffbff6,#f58ade)',
+        width: '100%',
+    },
     root: {
         display: 'flex',
         justifyContent: 'center',
@@ -165,7 +173,7 @@ export default function Login ( props ) {
 
 
     return (
-        <Grid container>
+        <Grid container className={classes.main}>
             <Grid item xs={1} md={4} />
             <Grid item xs={10} md={4}>
                 <Grid container className={classes.root}>

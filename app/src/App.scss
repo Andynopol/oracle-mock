@@ -3,7 +3,9 @@
     src: url('./res/AgreementSignature-qZX6x.ttf') format('truetype');
 }
 
-
+#root{
+    background: linear-gradient(to right top,#ffbff6,#f58ade),
+}
 
 .router-link {
     text-decoration: none;
