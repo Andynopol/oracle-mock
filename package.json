@@ -1,0 +1,21 @@
+{
+  "name": "oracle-mock",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Andynopol/oracle-mock.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Andynopol/oracle-mock/issues"
+  },
+  "homepage": "https://github.com/Andynopol/oracle-mock#readme"
+}
