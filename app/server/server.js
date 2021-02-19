@@ -2,13 +2,13 @@ const express = require( 'express' );
 const bcrypt = require( 'bcrypt' );
 const datastore = require( 'nedb' );
 const cors = require( 'cors' );
-const path = require( 'path' );
-const { triggerAsyncId } = require( 'async_hooks' );
-const { fail } = require( 'assert' );
+const session = require( 'express-session' );
+
 
 const app = express();
 
 const PORT = 5000;
+const TWO_HOURS = 1000 * 60 * 60 * 2;
 
 const users = [];
 
@@ -17,6 +17,18 @@ database.loadDatabase();
 
 //accepts JSON
 app.use( express.json() );
+
+app.use( session( {
+    name: 'sesion_id',
+    resave: false,
+    saveUninitialized: false,
+    secret: '/',
+    cookie: {
+        maxAge: TWO_HOURS,
+        sameSite: true,
+        secure: true,
+    }
+} ) );
 
 //listeninig
 app.listen( PORT, () => console.log( `listening at ${ PORT }` ) );
