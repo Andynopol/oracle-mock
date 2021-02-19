@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography, TextField, Button } from '@material-ui/core';
+import { Grid, Typography, TextField, Button, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import DatePicker from './DatePicker';
 import StatusSelect from './StatusSelect';
 import { Link } from 'react-router-dom';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const useStyles = makeStyles( ( theme ) => ( {
     main: {
@@ -55,7 +56,7 @@ export default function AddTodo ( props ) {
 
     const classes = useStyles();
 
-    const { userData, setUserData } = props;
+    const { userData, setUserData, setPath } = props;
 
     const [ complete, setComplete ] = useState( false );
     const [ title, setTitle ] = useState( null );
@@ -68,22 +69,28 @@ export default function AddTodo ( props ) {
             setTitleWarning( true );
             return;
         }
+        const datearr = dueDate.split( '-' );
+        const date = `${ datearr[ 2 ] }/${ datearr[ 1 ] }/${ datearr[ 0 ] }`;
+        console.log( date );
         const newTodo = {
             id: `${ title }${ dueDate }${ Math.floor( Math.random() * 10000 ) }`,
             title: title,
             isComplete: complete,
-            date: dueDate
+            date: date
         };
+        console.log( newTodo );
         const options = {
             headers: {
                 'Content-type': 'application/json'
             },
             method: 'POST',
-            body: JSON.stringify( newTodo )
+            body: JSON.stringify( { todo: newTodo } )
         };
 
         const response = await ( await fetch( `./add-note/${ userData.id }`, options ) ).json();
-        setUserData( { ...( await response ) } );
+        console.log( response );
+        setUserData( { ...response.userData } );
+        setPath( '/todos' );
     };
 
 
@@ -111,6 +118,11 @@ export default function AddTodo ( props ) {
             <Grid item xs={1} className={classes.stamp} />
             <Grid item xs={10}>
                 <Grid container>
+                    <Grid item xs={12}>
+                        <IconButton onClick={() => { setPath( '/todos' ); }}>
+                            <ArrowBackIcon />
+                        </IconButton>
+                    </Grid>
                     <Grid item xs={12} className={`${ classes.titleWrapper } ${ classes.stamp }`}>
                         <Typography className={classes.title}>
                             Add a new Todo

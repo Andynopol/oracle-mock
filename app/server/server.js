@@ -29,9 +29,24 @@ app.use( express.static( '../build' ) );
 
 
 //users path
-app.get( '/users', ( req, res ) => {
-    database.find( {}, ( err, docs ) => {
-        res.json( docs );
+app.get( '/:userId', ( req, res ) => {
+    const userId = req.params.userId;
+    database.find( { _id: userId }, ( err, docs ) => {
+        if ( err )
+        {
+            return res.status( 500 ).send( "Something went wrong with the server" );
+        }
+        if ( docs[ 0 ] )
+        {
+            const todos = docs[ 0 ].todos;
+            return res.status( 201 ).send( {
+                statusCode: 201,
+                status: 'success',
+                message: "Added",
+                userData: { todos: todos, id: userId }
+            } );
+        }
+        res.status( 500 ).send( "No user found" );
     } );
 
 } );
@@ -48,7 +63,7 @@ app.post( '/register-user', cors(), async ( req, res ) => {
             email: req.body.email,
             site: req.body.site,
             phone: req.body.phone,
-            todos: {}
+            todos: []
         };
         database.find( { username: user.username }, function ( err, docs ) {
             console.log( docs );
@@ -93,50 +108,58 @@ app.post( '/login-user', cors(), ( req, res ) => {
 
 // add note
 
-app.post( '/add-note:userId', ( req, res ) => {
+app.post( '/add-note/:userId', ( req, res ) => {
     const userId = req.params.userId;
     const newTodo = req.body.todo;
-    let todos;
     database.find( { _id: userId }, ( err, docs ) => {
-        todos = docs.todos;
-    } );
-    todos.push( newTodo );
-    database.update( { _id: userId }, { $set: { todos: todos } }, {}, ( err, num ) => {
         if ( err )
         {
-            return res.status( 500 ).send( { status: "Fail", message: "Something went wrong" } );
+            res.status( 500 ).send( { status: "Failed", message: "No user found" } );
+            return;
         }
-        res.status( 201 ).send( {
-            statusCode: 201,
-            status: 'success',
-            message: "Added",
-            userData: { todos: todos, id: userId }
+        const todos = docs[ 0 ].todos;
+        console.log( docs[ 0 ] );
+        todos.push( newTodo );
+        database.update( { _id: userId }, { $set: { todos: todos } }, {}, ( err, num ) => {
+            if ( err )
+            {
+                return res.status( 500 ).send( { status: "Fail", message: "Something went wrong" } );
+            }
+            res.status( 201 ).send( {
+                statusCode: 201,
+                status: 'success',
+                message: "Added",
+                userData: { todos: todos, id: userId }
+            } );
         } );
     } );
+
+
 } );
 
-app.put( '/complete:userId', ( req, res ) => {
+app.put( '/complete/:userId', ( req, res ) => {
     const userId = req.params.userId;
     const target = req.body.target;
-    let todos;
     database.find( { _id: userId }, ( err, docs ) => {
         if ( err )
         {
             return res.status( 500 ).send( { status: "fail", message: "No such user" } );
         }
-        todos = docs.todos;
+        const todos = docs[ 0 ].todos;
+        todos.forEach( todo => {
+            if ( todo.id === target )
+            {
+                todo.isComplete = !todo.isComplete;
+            }
+        } );
+        database.update( { _id: userId }, { $set: { todos: todos } }, {}, ( err, num ) => {
+            if ( err )
+            {
+                return res.status( 500 ).send( { status: "fail", message: "Something went wrong" } );
+            }
+            res.status( 201 ).send( { todos: todos, id: userId } );
+        } );
     } );
-    todos.forEach( todo => {
-        if ( todo.id === target )
-        {
-            todo.isCompleted = !todo.isCompleted;
-        }
-    } );
-    database.update( { _id: userId }, { $set: { todos: todos } }, {}, ( err, num ) => {
-        if ( err )
-        {
-            return res.status( 500 ).send( { status: "fail", message: "Something went wrong" } );
-        }
-        res.status( 201 ).send( { todos: todos, id: userId } );
-    } );
+
+
 } );

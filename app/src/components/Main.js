@@ -6,15 +6,23 @@ import AddTodo from './Add';
 import Nav from './Nav';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import panther from '../res/pink-panther.png';
-import { Grid } from '@material-ui/core';
 
 
 export default function Main () {
 
-    const [ auth, setAuth ] = useState( true );
+    const [ auth, setAuth ] = useState( null );
+    const [ path, setPath ] = useState( '/login' );
 
     useEffect( () => {
-        console.log( auth );
+        if ( auth )
+        {
+            localStorage.setItem( 'userId', `${ auth.id }` );
+            console.log( localStorage.getItem( 'userId' ) );
+            setPath( '/todos' );
+        }
+        return () => {
+            setPath( '/login' );
+        };
     }, [ auth ] );
 
     return (
@@ -22,12 +30,12 @@ export default function Main () {
 
             {auth ? <Nav setAuth={setAuth} /> : null}
             <Switch>
-                <Route path="/todos" exact render={() => <Todos userData={auth} />} />
-                <Route path="/todos/add" render={() => <AddTodo setUserData={setAuth} userData={auth} />} />
-                <Route path="/login" render={() => <Login panther={panther} setAuth={setAuth} />} />
-                <Route path="/register" render={() => <Register panther={panther} setAuth={setAuth} />} />
+                <Route path="/todos" exact render={() => <Todos setUserData={setAuth} userData={auth} setPath={setPath} />} />
+                <Route path="/add" render={() => <AddTodo setUserData={setAuth} userData={auth} setPath={setPath} />} />
+                <Route path="/login" render={() => <Login panther={panther} setAuth={setAuth} setPath={setPath} />} />
+                <Route path="/register" render={() => <Register panther={panther} setAuth={setAuth} setPath={setPath} />} />
             </Switch>
-            {!auth ? <Redirect to="/login" /> : <Redirect to="/todos" />}
+            <Redirect to={path} />
         </Router>
     );
 }

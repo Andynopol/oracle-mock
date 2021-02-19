@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles( ( theme ) => ( {
     main: {
@@ -105,7 +104,7 @@ const useStyles = makeStyles( ( theme ) => ( {
 } ) );
 
 export default function Login ( props ) {
-    const { panther, setAuth } = props;
+    const { panther, setAuth, setPath } = props;
     const classes = useStyles();
 
 
@@ -144,6 +143,7 @@ export default function Login ( props ) {
             {
                 setFailLoginMessage( '' );
                 setAuth( { ...response.userData } );
+                setPath( '/todos' );
             }
             else
             {
@@ -244,9 +244,7 @@ export default function Login ( props ) {
                                             <Grid item xs={1} />
                                             <Grid item xs={1} />
                                             <Grid item xs={4}>
-                                                <Link to="/register" className="router-link">
-                                                    <Button color="default">Register</Button>
-                                                </Link>
+                                                <Button color="default" onClick={() => { setPath( '/register' ); }}>Register</Button>
                                             </Grid>
                                             <Grid item xs={1} />
                                         </Grid>

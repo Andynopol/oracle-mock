@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
+import { Grid, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles( ( theme ) => ( {
     main: {
@@ -121,7 +120,7 @@ const useStyles = makeStyles( ( theme ) => ( {
 } ) );
 
 export default function Login ( props ) {
-    const { panther, setAuth } = props;
+    const { panther, setAuth, setPath } = props;
     const [ user, setUser ] = useState( { username: null, email: null, password: null, repassword: null, phone: null, site: null } );
     const [ invalidFields, setInvalidFields ] = useState( { username: false, email: false, password: false, repassword: false } );
     const [ registerMessage, setRegisterMessage ] = useState( '' );
@@ -168,6 +167,7 @@ export default function Login ( props ) {
                 if ( loginResponse.status === 'success' )
                 {
                     setAuth( { ...loginResponse.userData } );
+                    setPath( '/todos' );
                 }
             }
             else
@@ -294,9 +294,7 @@ export default function Login ( props ) {
                                             <Grid item xs={false} md={1} />
                                             <Grid item xs={2} md={5}>
                                                 <Grid container alignItems="center">
-                                                    <Link to="/login" className="router-link">
-                                                        <Button color="default">Back</Button>
-                                                    </Link>
+                                                    <Button color="default" onClick={() => { setPath( '/login' ); }}>Back</Button>
                                                 </Grid>
                                             </Grid>
                                             <Grid item xs={2} md={1} />

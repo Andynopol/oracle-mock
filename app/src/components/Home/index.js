@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, IconButton, } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Todo from './Todo';
 import Tabs from './Tabs';
@@ -39,13 +38,27 @@ const useStyles = makeStyles( ( theme ) => ( {
 
 export default function Todos ( props ) {
     const classes = useStyles();
-    const { userData } = props;
+    const { userData, setUserData, setPath } = props;
     const [ todos, setTodos ] = useState( null );
     const [ value, setValue ] = useState( 0 );
 
+    const updateTodos = async () => {
+        const response = await ( await fetch( `/${ userData.id }` ) ).json();
+        setUserData( { ...response.userData } );
+        setTodos( [ ...response.userData.todos ] );
+    };
+
+    useEffect( () => {
+        updateTodos();
+    }, [] );
+
     useEffect( () => {
         setTodos( userData.todos );
-    }, [] );
+    }, [ userData ] );
+
+    useEffect( () => {
+        console.log( todos );
+    }, [ todos ] );
 
     const handleOnClick = async ( id ) => {
         const obj = { target: id };
@@ -56,8 +69,11 @@ export default function Todos ( props ) {
             method: 'PUT',
             body: JSON.stringify( obj )
         };
-        fetch( `./complete:${ userData.id }`, options );
+        const response = await ( await fetch( `./complete/${ userData.id }`, options ) ).json();
+        console.log( response );
+        setUserData( { ...response } );
     };
+
 
     return (
         <Grid container direction="row" className={classes.main}>
@@ -65,11 +81,9 @@ export default function Todos ( props ) {
             <Grid item xs={12} md={8} className={classes.box}>
                 <Grid container>
                     <Grid item xs={12}>
-                        <Link to="/todos/add">
-                            <IconButton id="add-note">
-                                <AddCircleOutlineIcon />
-                            </IconButton>
-                        </Link>
+                        <IconButton id="add-note" onClick={() => { setPath( '/add' ); }}>
+                            <AddCircleOutlineIcon />
+                        </IconButton>
                         <label htmlFor="add-todo" className={classes.noSelect}>Add a new Todo</label>
                     </Grid>
                     <Grid item xs={12}>
@@ -80,12 +94,9 @@ export default function Todos ( props ) {
                 <Grid container className={classes.todos}>
                     <Grid item xs={12}>
                         {
-                            todos ? todos.map( todo => <Todo id={todo.id} complete={handleOnClick} title={todo.title} date={todo.date} completed={todo.idCompleted} /> ) :
+                            todos && todos.length ? todos.map( todo => <Todo id={todo.id} complete={handleOnClick} title={todo.title} date={todo.date} completed={todo.isComplete} /> ) :
                                 <Grid item xs={12} className={classes.message}><div>No Todo</div></Grid>}
                     </Grid>
-
-
-
                 </Grid>
             </Grid>
             <Grid item xs={false} md={2} />
