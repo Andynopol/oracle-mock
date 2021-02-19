@@ -9,7 +9,6 @@ import panther from '../res/pink-panther.png';
 
 
 export default function Main () {
-
     const [ auth, setAuth ] = useState( null );
     const [ path, setPath ] = useState( '/login' );
 
