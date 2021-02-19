@@ -21,7 +21,7 @@ app.use( express.json() );
 //listeninig
 app.listen( PORT, () => console.log( `listening at ${ PORT }` ) );
 //exporting file
-app.use( express.static( '../build' ) );
+app.use( express.static( './public' ) );
 
 
 // return index every time
