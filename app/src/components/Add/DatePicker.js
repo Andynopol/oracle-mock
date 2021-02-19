@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
@@ -28,6 +28,10 @@ export default function DatePickers ( props ) {
     const handleOnChange = ( event ) => {
         setDate( event.target.value );
     };
+
+    useEffect( () => {
+        setDate( document.getElementById( 'date' ).value );
+    }, [] );
 
     return (
         <Grid className={classes.container} noValidate>

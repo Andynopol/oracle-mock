@@ -9,6 +9,7 @@ const useStyles = makeStyles( () => ( {
         height: '3rem',
         border: '1px solid lightgrey',
         userSelect: 'none',
+        cursor: 'pointer',
     },
     titleWrapper: {
         fontWeight: 'bold',
@@ -46,10 +47,14 @@ const useStyles = makeStyles( () => ( {
 
 
 export default function Todo ( props ) {
-    const { title, date, completed } = props;
+    const { title, date, id, complete } = props;
+    let { completed } = props;
     const classes = useStyles();
+
+
+
     return (
-        <Grid container className={classes.root}>
+        <Grid container className={classes.root} onClick={() => { completed = !completed; complete( id ); }} >
             <Grid item xs={5} md={6} className={classes.titleWrapper}>
                 <Grid container className={classes.title}>
                     {title}
@@ -63,6 +68,6 @@ export default function Todo ( props ) {
                     {date}
                 </Grid>
             </Grid>
-        </Grid>
+        </Grid >
     );
 }

@@ -6,6 +6,7 @@ import AddTodo from './Add';
 import Nav from './Nav';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import panther from '../res/pink-panther.png';
+import { Grid } from '@material-ui/core';
 
 
 export default function Main () {
@@ -18,10 +19,11 @@ export default function Main () {
 
     return (
         <Router>
+
             {auth ? <Nav setAuth={setAuth} /> : null}
             <Switch>
-                <Route path="/todos" exact component={Todos} />
-                <Route path="/todos/add" component={AddTodo} />
+                <Route path="/todos" exact render={() => <Todos userData={auth} />} />
+                <Route path="/todos/add" render={() => <AddTodo setUserData={setAuth} userData={auth} />} />
                 <Route path="/login" render={() => <Login panther={panther} setAuth={setAuth} />} />
                 <Route path="/register" render={() => <Register panther={panther} setAuth={setAuth} />} />
             </Switch>

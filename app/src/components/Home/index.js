@@ -10,11 +10,14 @@ const useStyles = makeStyles( ( theme ) => ( {
     main: {
         minHeight: '100vh',
         width: '100%',
-        paddingTop: '100px',
+        paddingTop: '60px',
     },
     todos: {
         overflowY: 'auto',
-        height: '70vh'
+        height: '70vh',
+        '@media screen and (orientation: landscape)': {
+            height: '50vh'
+        },
     },
     message: {
         color: 'lightgrey',
@@ -26,7 +29,12 @@ const useStyles = makeStyles( ( theme ) => ( {
     },
     noSelect: {
         userSelect: 'none'
-    }
+    },
+    box: {
+        display: 'flex',
+        flexFlow: "column",
+        height: '100%',
+    },
 } ) );
 
 export default function Todos ( props ) {
@@ -36,62 +44,47 @@ export default function Todos ( props ) {
     const [ value, setValue ] = useState( 0 );
 
     useEffect( () => {
-
+        setTodos( userData.todos );
     }, [] );
 
-    const handleAddTodo = () => {
-        if ( userData )
-        {
-            setTodos( { ...userData.todos } );
-        }
+    const handleOnClick = async ( id ) => {
+        const obj = { target: id };
+        const options = {
+            headers: {
+                'Content-type': 'application/json'
+            },
+            method: 'PUT',
+            body: JSON.stringify( obj )
+        };
+        fetch( `./complete:${ userData.id }`, options );
     };
+
     return (
         <Grid container direction="row" className={classes.main}>
             <Grid item xs={false} md={2} />
-            <Grid item xs={12} md={8}>
-                <Link to="/todos/add">
-                    <IconButton id="add-note" onClick={handleAddTodo}>
-                        <AddCircleOutlineIcon />
-                    </IconButton>
-                </Link>
-                <label htmlFor="add-todo" className={classes.noSelect}>Add a new Todo</label>
-                <Tabs value={value} setValue={setValue} />
+            <Grid item xs={12} md={8} className={classes.box}>
+                <Grid container>
+                    <Grid item xs={12}>
+                        <Link to="/todos/add">
+                            <IconButton id="add-note">
+                                <AddCircleOutlineIcon />
+                            </IconButton>
+                        </Link>
+                        <label htmlFor="add-todo" className={classes.noSelect}>Add a new Todo</label>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Tabs value={value} setValue={setValue} />
+                    </Grid>
+                </Grid>
+
                 <Grid container className={classes.todos}>
-                    {/* {
-                        todos ? todos.map( todo => <Todo title={todo.title} date={todo.date} completed={todo.completed} /> ) :
-                            <Grid item xs={12} className={classes.message}><div>No Todo</div></Grid>} */}
-                    <Todo title='titleasdasdasdsadasdasdasdsad' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
-                    <Todo title='title' date="21.02.2021" completed={true}></Todo>
+                    <Grid item xs={12}>
+                        {
+                            todos ? todos.map( todo => <Todo id={todo.id} complete={handleOnClick} title={todo.title} date={todo.date} completed={todo.idCompleted} /> ) :
+                                <Grid item xs={12} className={classes.message}><div>No Todo</div></Grid>}
+                    </Grid>
+
+
 
                 </Grid>
             </Grid>

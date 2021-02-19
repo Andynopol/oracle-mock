@@ -3,6 +3,8 @@ const bcrypt = require( 'bcrypt' );
 const datastore = require( 'nedb' );
 const cors = require( 'cors' );
 const path = require( 'path' );
+const { triggerAsyncId } = require( 'async_hooks' );
+const { fail } = require( 'assert' );
 
 const app = express();
 
@@ -69,7 +71,7 @@ app.post( '/register-user', cors(), async ( req, res ) => {
 //login path
 app.post( '/login-user', cors(), ( req, res ) => {
     database.find( { username: req.body.username }, async function ( err, docs ) {
-        console.log( docs );
+        console.log( this );
         if ( docs[ 0 ] )
         {
             console.log( docs );
@@ -86,5 +88,55 @@ app.post( '/login-user', cors(), ( req, res ) => {
         }
         return res.status( 201 ).send( { statusCode: 201, status: 'failed', message: "Incorrect username" } );
 
+    } );
+} );
+
+// add note
+
+app.post( '/add-note:userId', ( req, res ) => {
+    const userId = req.params.userId;
+    const newTodo = req.body.todo;
+    let todos;
+    database.find( { _id: userId }, ( err, docs ) => {
+        todos = docs.todos;
+    } );
+    todos.push( newTodo );
+    database.update( { _id: userId }, { $set: { todos: todos } }, {}, ( err, num ) => {
+        if ( err )
+        {
+            return res.status( 500 ).send( { status: "Fail", message: "Something went wrong" } );
+        }
+        res.status( 201 ).send( {
+            statusCode: 201,
+            status: 'success',
+            message: "Added",
+            userData: { todos: todos, id: userId }
+        } );
+    } );
+} );
+
+app.put( '/complete:userId', ( req, res ) => {
+    const userId = req.params.userId;
+    const target = req.body.target;
+    let todos;
+    database.find( { _id: userId }, ( err, docs ) => {
+        if ( err )
+        {
+            return res.status( 500 ).send( { status: "fail", message: "No such user" } );
+        }
+        todos = docs.todos;
+    } );
+    todos.forEach( todo => {
+        if ( todo.id === target )
+        {
+            todo.isCompleted = !todo.isCompleted;
+        }
+    } );
+    database.update( { _id: userId }, { $set: { todos: todos } }, {}, ( err, num ) => {
+        if ( err )
+        {
+            return res.status( 500 ).send( { status: "fail", message: "Something went wrong" } );
+        }
+        res.status( 201 ).send( { todos: todos, id: userId } );
     } );
 } );

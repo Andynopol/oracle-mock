@@ -16,7 +16,7 @@ const useStyles = makeStyles( ( theme ) => ( {
 export default function SelectLabels ( props ) {
     const classes = useStyles();
     const { setComplete } = props;
-    const [ value, setValue ] = useState( '' );
+    const [ value, setValue ] = useState( 'incomplete' );
 
 
     const handleChange = ( event ) => {
@@ -33,9 +33,6 @@ export default function SelectLabels ( props ) {
                 className={classes.selectEmpty}
                 inputProps={{ 'aria-label': 'Without label' }}
             >
-                <MenuItem value="">
-                    <em>None</em>
-                </MenuItem>
                 <MenuItem value={"complete"}>Complete</MenuItem>
                 <MenuItem value={"incomplete"}>Incomplete</MenuItem>
             </Select>
