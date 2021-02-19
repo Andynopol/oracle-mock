@@ -1,0 +1,20 @@
+{
+  "name": "oracle-mock",
+  "version": "1.0.0",
+  "description": "This is a test project offeered form Oracle employees to determine my skill level.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./app/server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Andynopol/oracle-mock.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Andynopol/oracle-mock/issues"
+  },
+  "homepage": "https://github.com/Andynopol/oracle-mock#readme"
+}
