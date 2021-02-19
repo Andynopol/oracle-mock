@@ -41,24 +41,37 @@ export default function Todos ( props ) {
     const { userData, setUserData, setPath } = props;
     const [ todos, setTodos ] = useState( null );
     const [ value, setValue ] = useState( 0 );
-
-    const updateTodos = async () => {
-        const response = await ( await fetch( `/${ userData.id }` ) ).json();
-        setUserData( { ...response.userData } );
-        setTodos( [ ...response.userData.todos ] );
-    };
+    const [ completedTodos, setCompletedTodos ] = useState( null );
+    const [ incompletedTodos, setIncompletedTodos ] = useState( null );
 
     useEffect( () => {
-        updateTodos();
-    }, [] );
+        console.log( value );
+    }, [ value ] );
 
     useEffect( () => {
-        setTodos( userData.todos );
-    }, [ userData ] );
+        console.log( completedTodos );
+    }, [ completedTodos ] );
 
     useEffect( () => {
-        console.log( todos );
-    }, [ todos ] );
+        console.log( incompletedTodos );
+    }, [ incompletedTodos ] );
+
+    useEffect( () => {
+        if ( userData )
+        {
+            if ( value === 0 )
+            {
+                setTodos( userData.todos );
+            } else if ( value === 1 )
+            {
+                setTodos( userData.todos.filter( todo => !todo.isComplete ) );
+            } else if ( value === 2 )
+            {
+                setTodos( userData.todos.filter( todo => todo.isComplete ) );
+            }
+
+        }
+    }, [ userData, value ] );
 
     const handleOnClick = async ( id ) => {
         const obj = { target: id };
@@ -70,7 +83,6 @@ export default function Todos ( props ) {
             body: JSON.stringify( obj )
         };
         const response = await ( await fetch( `./complete/${ userData.id }`, options ) ).json();
-        console.log( response );
         setUserData( { ...response } );
     };
 
@@ -94,8 +106,12 @@ export default function Todos ( props ) {
                 <Grid container className={classes.todos}>
                     <Grid item xs={12}>
                         {
-                            todos && todos.length ? todos.map( todo => <Todo id={todo.id} complete={handleOnClick} title={todo.title} date={todo.date} completed={todo.isComplete} /> ) :
-                                <Grid item xs={12} className={classes.message}><div>No Todo</div></Grid>}
+                            todos && todos.length ? todos.map( todo => <Todo id={todo.id} complete={handleOnClick} title={todo.title} date={todo.date} completed={todo.isComplete} /> ) : value === 0 ?
+                                <Grid item xs={12} className={classes.message}><div>No Todo</div></Grid> : value === 1 ?
+                                    <Grid item xs={12} className={classes.message}><div>No Incompleyed Todo</div></Grid> :
+                                    <Grid item xs={12} className={classes.message}><div>No Compleyed Todo</div></Grid>
+                        }
+
                     </Grid>
                 </Grid>
             </Grid>

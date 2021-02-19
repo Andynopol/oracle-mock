@@ -16,8 +16,6 @@ export default function Main () {
     useEffect( () => {
         if ( auth )
         {
-            localStorage.setItem( 'userId', `${ auth.id }` );
-            console.log( localStorage.getItem( 'userId' ) );
             setPath( '/todos' );
         }
         return () => {

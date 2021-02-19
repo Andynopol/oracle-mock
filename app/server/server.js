@@ -66,7 +66,7 @@ app.post( '/register-user', cors(), async ( req, res ) => {
             todos: []
         };
         database.find( { username: user.username }, function ( err, docs ) {
-            console.log( docs );
+            // console.log( docs );
             if ( docs[ 0 ] )
             {
                 return res.status( 201 ).send( { statusCode: 201, status: 'failed', message: "Username already in use" } );;
